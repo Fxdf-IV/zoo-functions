@@ -21,21 +21,24 @@ function getAnimalsOlderThan(animal, age) {
 function getEmployeeByName(employeeName) {
   if (employeeName === undefined) {
     return {};
-  }
+  };
   return employeesInfo.find(employee =>
-    employeeName.includes(employee.firstName) || employeeName.includes(employee.lastName));
-}
+    employeeName.includes(employee.firstName) || employeeName.includes(employee.lastName)
+  );
+};
 
 function createEmployee(personalInfo, associatedWith) {
-  return {...personalInfo, ...associatedWith}
+  return { ...personalInfo, ...associatedWith };
 }
 
 function isManager(id) {
-  return employeesInfo.find(employee => id.includes(employee.managers))
+  return employeesInfo.some(employee =>
+    employee.managers.includes(id)
+  );
 }
 
 function addEmployee(id, firstName, lastName, managers, responsibleFor) {
-  // seu código aqui
+  
 }
 
 function countAnimals(species) {
