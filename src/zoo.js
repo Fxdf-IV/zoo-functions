@@ -76,7 +76,17 @@ function calculateEntry(entrants) {
 }
 
 function getAnimalMap(options) {
-  // seu código aqui
+  const speciesName = speciesInfo.map(animal => animal.name);
+  const speciesLocation = speciesInfo.map(animal => animal.location);
+  let animalLocations = {};
+
+  for (let index in speciesName) {
+    animalLocations[speciesLocation[index]] = [speciesName[index]]
+  }
+
+  if (options === undefined) {
+    return animalLocations
+  }
 }
 
 function getSchedule(dayName) {
