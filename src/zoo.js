@@ -25,7 +25,7 @@ function getEmployeeByName(employeeName) {
   return employeesInfo.find(employee =>
     employeeName.includes(employee.firstName) || employeeName.includes(employee.lastName)
   );
-};
+}
 
 function createEmployee(personalInfo, associatedWith) {
   return { ...personalInfo, ...associatedWith };
@@ -38,11 +38,23 @@ function isManager(id) {
 }
 
 function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
-  employeesInfo.push({ id, firstName, lastName, managers, responsibleFor})
+  employeesInfo.push({ id, firstName, lastName, managers, responsibleFor });
 }
 
 function countAnimals(species) {
-  // seu código aqui
+  const speciesName = speciesInfo.map(animal => animal.name);
+  const speciesCount = speciesInfo.map(animal => animal.residents.length);
+  let animalQuantieList = {};
+
+  for (let index in speciesName) {
+    animalQuantieList[speciesName[index]] = speciesCount[index]
+  };
+
+  if (species === undefined) {
+    return animalQuantieList
+  };
+
+  return animalQuantieList[species];
 }
 
 function calculateEntry(entrants) {
