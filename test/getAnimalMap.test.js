@@ -2,7 +2,7 @@ const assert = require('assert');
 const zoo = require('../src/zoo');
 
 describe('Implemente a função getAnimalMap', () => {
-  it('Sem parâmetros, retorna animais categorizados por localização', () => {
+  it.only('Sem parâmetros, retorna animais categorizados por localização', () => {
     const expected = {
       NE: ['lions', 'giraffes'],
       NW: ['tigers', 'bears', 'elephants'],
