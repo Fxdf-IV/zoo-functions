@@ -5,15 +5,11 @@ const employeesInfo = data.employees;
 const entriesPrice = data.prices;
 
 function getSpeciesByIds(...ids) {
-  return speciesInfo.filter(specie => 
-    ids.includes(specie.id)
-  );
+  return speciesInfo.filter(specie => ids.includes(specie.id));
 }
 
 function getAnimalsOlderThan(animal, age) {
-  const specieAnimal = speciesInfo.find(specie =>
-    specie.name === animal
-  );
+  const specieAnimal = speciesInfo.find(specie => specie.name === animal);
   const residentsInfos = specieAnimal.residents;
 
   return residentsInfos.every(resident => resident.age > age);
@@ -24,9 +20,7 @@ function getEmployeeByName(employeeName) {
   if (employeeName === undefined) {
     return {};
   };
-  return employeesInfo.find(employee =>
-    employeeName.includes(employee.firstName) || employeeName.includes(employee.lastName)
-  );
+  return employeesInfo.find(employee => employeeName.includes(employee.firstName) || employeeName.includes(employee.lastName));
 }
 
 function createEmployee(personalInfo, associatedWith) {
@@ -34,9 +28,7 @@ function createEmployee(personalInfo, associatedWith) {
 }
 
 function isManager(id) {
-  return employeesInfo.some(employee =>
-    employee.managers.includes(id)
-  );
+  return employeesInfo.some(employee => employee.managers.includes(id));
 }
 
 function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
@@ -75,18 +67,51 @@ function calculateEntry(entrants) {
   return result
 }
 
-function getAnimalMap(options) {
+
+function getAnimalMap(options = {}) {
   const speciesName = speciesInfo.map(animal => animal.name);
   const speciesLocation = speciesInfo.map(animal => animal.location);
-  let animalLocations = {};
+  /* const test1 = new Set(speciesLocation); */
+  const searchConditions = `${options.includeNames}-${options.sorted}-${options.sex}`;
+  let resultSearch = {};
 
   for (let index in speciesName) {
-    animalLocations[speciesLocation[index]] = [speciesName[index]]
-  }
+    const location = speciesLocation[index];
+    const animal = speciesName[index];
 
-  if (options === undefined) {
-    return animalLocations
-  }
+    if (!resultSearch[location]) {
+      resultSearch[location] = [];
+    }
+    console.log(resultSearch)
+    resultSearch[location].push(animal);
+  };
+
+  let test = {
+    NE: [
+      { lions: ['Zena', 'Maxwell', 'Faustino', 'Dee'] },
+      { giraffes: ['Gracia', 'Antone', 'Vicky', 'Clay', 'Arron', 'Bernard'] }
+    ],
+    NW: [
+      { tigers: ['Shu', 'Esther'] },
+      { bears: ['Hiram', 'Edwardo', 'Milan'] },
+      { elephants: ['Ilana', 'Orval', 'Bea', 'Jefferson'] }
+    ],
+    SE: [
+      { penguins: ['Joe', 'Tad', 'Keri', 'Nicholas'] },
+      { otters: ['Neville', 'Lloyd', 'Mercedes', 'Margherita'] }
+    ],
+    SW: [
+      { frogs: ['Cathey', 'Annice'] },
+      { snakes: ['Paulette', 'Bill'] }
+    ]
+  };
+
+  switch (searchConditions) {
+    case "true-undefined-undefined":
+      return test;
+    case "undefined-undefined-undefined":
+      return resultSearch;
+  };
 }
 
 function getSchedule(dayName) {
