@@ -90,7 +90,7 @@ describe('Implemente a função getAnimalMap', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('Com a opção `sex: \'female\'` ou `sex: \'male\'` especificada e a opção `sort: true` especificada, retorna somente nomes de animais macho/fêmea com os nomes dos animais ordenados', () => {
+  it('Com a opção `sex: \'female\'` ou `sex: \'male\'` especificada e a opção `sorted: true` especificada, retorna somente nomes de animais macho/fêmea com os nomes dos animais ordenados', () => {
     const options = { includeNames: true, sex: 'female', sorted: true }
     const actual = zoo.getAnimalMap(options);
     const expected = {
