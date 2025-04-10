@@ -2,7 +2,7 @@ const assert = require('assert');
 const zoo = require('../src/zoo');
 
 describe('Implemente a função getAnimalMap', () => {
-  it.only('Sem parâmetros, retorna animais categorizados por localização', () => {
+  it('Sem parâmetros, retorna animais categorizados por localização', () => {
     const expected = {
       NE: ['lions', 'giraffes'],
       NW: ['tigers', 'bears', 'elephants'],
@@ -116,15 +116,21 @@ describe('Implemente a função getAnimalMap', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('Só retorna informações ordenadas e com sexo se a opção `includeNames: true` for especificada', () => {
-    let options = { sex: 'female' }
-    let actual = zoo.getAnimalMap(options)['NE'][0];
-    let expected = 'lions';
-    assert.strictEqual(actual, expected);
+  it('Só deve aplicar `sex` e `sorted` se `includeNames: true` for especificado', () => {
+    const options1 = { sex: 'female' };
+    const actual1 = zoo.getAnimalMap(options1);
+    const expected1 = {
+      NE: ['lions', 'giraffes'],
+      NW: ['tigers', 'bears', 'elephants'],
+      SE: ['penguins', 'otters'],
+      SW: ['frogs', 'snakes']
+    };
 
-    options = { sex: 'female', sorted: true }
-    actual = zoo.getAnimalMap(options)['NE'][0];
-    expected = 'lions';
-    assert.strictEqual(actual, expected);
-  });
+    assert.deepStrictEqual(actual1, expected1);
+
+    const options2 = { sex: 'female', sorted: true };
+    const actual2 = zoo.getAnimalMap(options2);
+    
+    assert.deepStrictEqual(actual2, expected1);
+});
 });
