@@ -69,21 +69,21 @@ function calculateEntry(entrants) {
 
 
 function getAnimalMap(options = {}) {
-  const includeNames = options.includeNames === true;
-  const shouldSort = options.sorted === true;
+  const includeNames = options.includeNames;
+  const shouldSort = options.sorted;
   const filterSex = options.sex;
 
   let result = {};
 
-  speciesInfo.forEach((animal) => {
-    const speciesNames = animal.name;
-    const location = animal.location;
-    const residents = animal.residents;
+  speciesInfo.forEach((specie) => {
+    const specieName = specie.name;
+    const location = specie.location;
+    const residents = specie.residents;
     
     result[location] ??= [];
 
     if (!includeNames) {
-      result[location].push(speciesNames);
+      result[location].push(specieName);
       return;
     }
 
@@ -99,14 +99,15 @@ function getAnimalMap(options = {}) {
       residentNames.sort();
     }
 
-    result[location].push({ [speciesNames]: residentNames });
+    result[location].push({ [specieName]: residentNames });
   });
 
+  console.log(result)
   return result;
 }
 
 function getSchedule(dayName) {
-  // seu código aqui
+  
 }
 
 function getOldestFromFirstSpecies(id) {
