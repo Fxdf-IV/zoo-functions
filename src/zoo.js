@@ -36,12 +36,12 @@ function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []
 }
 
 function countAnimals(species) {
-  const speciesName = speciesInfo.map(animal => animal.name);
+  const speciesNames = speciesInfo.map(animal => animal.name);
   const speciesCount = speciesInfo.map(animal => animal.residents.length);
   let animalQuantieList = {};
 
-  for (let index in speciesName) {
-    animalQuantieList[speciesName[index]] = speciesCount[index]
+  for (let index in speciesNames) {
+    animalQuantieList[speciesNames[index]] = speciesCount[index]
   };
 
   if (species === undefined) {
@@ -69,49 +69,40 @@ function calculateEntry(entrants) {
 
 
 function getAnimalMap(options = {}) {
-  const speciesName = speciesInfo.map(animal => animal.name);
-  const speciesLocation = speciesInfo.map(animal => animal.location);
-  /* const test1 = new Set(speciesLocation); */
-  const searchConditions = `${options.includeNames}-${options.sorted}-${options.sex}`;
-  let resultSearch = {};
+  const includeNames = options.includeNames === true;
+  const shouldSort = options.sorted === true;
+  const filterSex = options.sex;
 
-  for (let index in speciesName) {
-    const location = speciesLocation[index];
-    const animal = speciesName[index];
+  let result = {};
 
-    if (!resultSearch[location]) {
-      resultSearch[location] = [];
+  speciesInfo.forEach((animal) => {
+    const speciesNames = animal.name;
+    const location = animal.location;
+    const residents = animal.residents;
+    
+    result[location] ??= [];
+
+    if (!includeNames) {
+      result[location].push(speciesNames);
+      return;
     }
-    console.log(resultSearch)
-    resultSearch[location].push(animal);
-  };
 
-  let test = {
-    NE: [
-      { lions: ['Zena', 'Maxwell', 'Faustino', 'Dee'] },
-      { giraffes: ['Gracia', 'Antone', 'Vicky', 'Clay', 'Arron', 'Bernard'] }
-    ],
-    NW: [
-      { tigers: ['Shu', 'Esther'] },
-      { bears: ['Hiram', 'Edwardo', 'Milan'] },
-      { elephants: ['Ilana', 'Orval', 'Bea', 'Jefferson'] }
-    ],
-    SE: [
-      { penguins: ['Joe', 'Tad', 'Keri', 'Nicholas'] },
-      { otters: ['Neville', 'Lloyd', 'Mercedes', 'Margherita'] }
-    ],
-    SW: [
-      { frogs: ['Cathey', 'Annice'] },
-      { snakes: ['Paulette', 'Bill'] }
-    ]
-  };
+    let residentNames = residents;
 
-  switch (searchConditions) {
-    case "true-undefined-undefined":
-      return test;
-    case "undefined-undefined-undefined":
-      return resultSearch;
-  };
+    if (filterSex) {
+      residentNames = residentNames.filter(({ sex }) => sex === filterSex);
+    }
+
+    residentNames = residentNames.map(({ name }) => name);
+
+    if (shouldSort) {
+      residentNames.sort();
+    }
+
+    result[location].push({ [speciesNames]: residentNames });
+  });
+
+  return result;
 }
 
 function getSchedule(dayName) {
