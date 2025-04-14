@@ -1,15 +1,16 @@
 
 const data = require('./data');
-const speciesInfo = data.species; 
-const employeesInfo = data.employees;
-const entriesPrice = data.prices;
+const animalSpeciesData = data.species; 
+const employeeData = data.employees;
+const animalEntryPrices = data.prices;
+const zooOpeningHours = data.hours;
 
 function getSpeciesByIds(...ids) {
-  return speciesInfo.filter(specie => ids.includes(specie.id));
+  return animalSpeciesData.filter(specie => ids.includes(specie.id));
 }
 
 function getAnimalsOlderThan(animal, age) {
-  const specieAnimal = speciesInfo.find(specie => specie.name === animal);
+  const specieAnimal = animalSpeciesData.find(specie => specie.name === animal);
   const residentsInfos = specieAnimal.residents;
 
   return residentsInfos.every(resident => resident.age > age);
@@ -20,7 +21,7 @@ function getEmployeeByName(employeeName) {
   if (employeeName === undefined) {
     return {};
   };
-  return employeesInfo.find(employee => employeeName.includes(employee.firstName) || employeeName.includes(employee.lastName));
+  return employeeData.find(employee => employeeName.includes(employee.firstName) || employeeName.includes(employee.lastName));
 }
 
 function createEmployee(personalInfo, associatedWith) {
@@ -28,16 +29,16 @@ function createEmployee(personalInfo, associatedWith) {
 }
 
 function isManager(id) {
-  return employeesInfo.some(employee => employee.managers.includes(id));
+  return employeeData.some(employee => employee.managers.includes(id));
 }
 
 function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
-  employeesInfo.push({ id, firstName, lastName, managers, responsibleFor });
+  employeeData.push({ id, firstName, lastName, managers, responsibleFor });
 }
 
 function countAnimals(species) {
-  const speciesNames = speciesInfo.map(animal => animal.name);
-  const speciesCount = speciesInfo.map(animal => animal.residents.length);
+  const speciesNames = animalSpeciesData.map(animal => animal.name);
+  const speciesCount = animalSpeciesData.map(animal => animal.residents.length);
   let animalQuantieList = {};
 
   for (let index in speciesNames) {
@@ -59,9 +60,9 @@ function calculateEntry(entrants) {
   const { Adult = 0, Child = 0, Senior = 0 } = entrants;
 
   let result = (
-    (Adult * entriesPrice.Adult) +
-    (Child * entriesPrice.Child) +
-    (Senior * entriesPrice.Senior)
+    (Adult * animalEntryPrices.Adult) +
+    (Child * animalEntryPrices.Child) +
+    (Senior * animalEntryPrices.Senior)
   );
 
   return result
@@ -75,7 +76,7 @@ function getAnimalMap(options = {}) {
 
   let result = {};
 
-  speciesInfo.forEach((specie) => {
+  animalSpeciesData.forEach((specie) => {
     const specieName = specie.name;
     const location = specie.location;
     const residents = specie.residents;
@@ -107,7 +108,29 @@ function getAnimalMap(options = {}) {
 }
 
 function getSchedule(dayName) {
+  const zooOperatingDays = Object.keys(zooOpeningHours);
+  const zooInfo = {};
   
+  zooOperatingDays.forEach((day) => {
+    const { open, close } = zooOpeningHours[day];
+    const hourIn12Format = close % 12 || 12;
+
+    let operatingHoursMessage = `Open from ${open}am until ${hourIn12Format}pm`;
+
+    if (open === 0 || close === 0) {
+      operatingHoursMessage = 'CLOSED'
+    }
+  
+    zooInfo[day] = operatingHoursMessage;
+  });
+  
+  if (dayName === undefined) {
+    return zooInfo
+  };
+
+  const dailyZooInfo = { [dayName]: zooInfo[dayName] }
+  
+  return dailyZooInfo;
 }
 
 function getOldestFromFirstSpecies(id) {
