@@ -4,7 +4,7 @@ const data = require('../src/data');
 
 
 describe('Implemente a função increasePrices', () => {
-  it('Ao passar uma porcentagem, incrementa todos os preços, arrendondados em duas casas decimais', () => {
+  it('Ao passar uma porcentagem, altera o data.js, incrementando todos os preços, arrendondados em duas casas decimais', () => {
     zoo.increasePrices(50);
     let expected = {
       'Adult': 74.99,
