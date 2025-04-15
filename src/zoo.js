@@ -37,19 +37,17 @@ function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []
 }
 
 function countAnimals(species) {
-  const speciesNames = animalSpeciesData.map(animal => animal.name);
-  const speciesCount = animalSpeciesData.map(animal => animal.residents.length);
   let animalQuantieList = {};
 
-  for (let index in speciesNames) {
-    animalQuantieList[speciesNames[index]] = speciesCount[index]
-  };
+  animalSpeciesData.forEach((animal) => {
+    animalQuantieList[animal.name] = animal.residents.length;
+  });
 
   if (species === undefined) {
     return animalQuantieList
-  };
+  }
 
-  return animalQuantieList[species];
+  return animalQuantieList[species]
 }
 
 function calculateEntry(entrants) {
