@@ -131,8 +131,15 @@ function getSchedule(dayName) {
   return dailyZooInfo;
 }
 
-function getOldestFromFirstSpecies(id) {
-  // seu código aqui
+function getOldestFromFirstSpecies(employeeId) {
+  const selectedEmployee = employeeData.find(employee => employee.id === employeeId);
+  const primarySpeciesID = selectedEmployee.responsibleFor[0];
+  
+  const findAnimalBySpeciesId = animalSpeciesData.find(animal => animal.id === primarySpeciesID);
+  const oldestAnimal = findAnimalBySpeciesId.residents.reduce((oldest, actual) => {
+    return oldest.age > actual.age ? oldest : actual
+  })
+  return [oldestAnimal.name, oldestAnimal.sex, oldestAnimal.age]
 }
 
 function increasePrices(percentage) {
