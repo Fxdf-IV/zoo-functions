@@ -152,30 +152,28 @@ function increasePrices(percentage) {
 }
 
 function getEmployeeCoverage(idOrName) {
-  const employeeCoverageArray = employeeData.map((employee => {
-    const { firstName, lastName, responsibleFor, id} = employee;
-    
-    const animalNamesResponsibleFor = responsibleFor.map(id => {
-      const animal = animalSpeciesData.find(animal => animal.id === id);
-      return animal.name; 
-    });
+  const buildEmployeeCoverage = (employee) => {
+    const fullName = `${employee.firstName} ${employee.lastName}`;
+    const animals = employee.responsibleFor.map(animalId =>
+      animalSpeciesData.find(species => species.id === animalId).name
+    );
+    return { [fullName]: animals };
+  };
 
-    const employeeFullName = `${firstName} ${lastName}`;
-    const employeeCoverageObject = {};
-    employeeCoverageObject[employeeFullName] = animalNamesResponsibleFor;
-
-    return employeeCoverageObject;
-  }))
-
-  const employeeCoverage = Object.assign({}, ...employeeCoverageArray);
+  const coverageList = employeeData.map(buildEmployeeCoverage);
+  const coverage = Object.assign({}, ...coverageList);
 
   if (!idOrName) {
-    return employeeCoverage;
+    return coverage
   }
 
-  if (idOrName === id || idOrName === firstName || idOrName === lastName) {
-    return employeeCoverage.includes(idOrName === id || idOrName === firstName || idOrName === lastName)
-  }
+  const employee = employeeData.find(({ id, firstName, lastName }) => {
+    const employeeInfo = [id, firstName, lastName];
+    
+    return employeeInfo.includes(idOrName)
+  });
+
+  return buildEmployeeCoverage(employee)
 }
 
 module.exports = {
