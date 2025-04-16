@@ -101,7 +101,6 @@ function getAnimalMap(options = {}) {
     result[location].push({ [specieName]: residentNames });
   });
 
-  console.log(result)
   return result;
 }
 
